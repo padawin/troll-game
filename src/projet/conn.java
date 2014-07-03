@@ -9,19 +9,7 @@ public class conn {
 
 	public conn() {
 		boolean coReussite = this
-				.connexionBd("dbhost/dbname", "user", "password");
-		while (!coReussite) {
-			System.out.println("Base introuvable !");
-			System.out
-					.println("Veuillez indiquer les parametres de la BD à utiliser");
-			System.out.print("Adresse : jdbc:postgresql://");
-			String adresse = IO.lireChaine();
-			System.out.print("Utilsateur : ");
-			String user = IO.lireChaine();
-			System.out.print("Mot de passe : ");
-			String mdp = IO.lireChaine();
-			coReussite = this.connexionBd(adresse, user, mdp);
-		}
+				.connexionBd("localhost/trolls", "troll", "Troll");
 	}
 
 	public boolean connexionBd(String adresse, String user, String mdp) {
