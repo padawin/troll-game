@@ -62,7 +62,7 @@ BEGIN
 	if ((select count (*) from bonus where caracteristique=bonus_carac and valeur=bonus_val)=0) then
 		INSERT INTO bonus (caracteristique,valeur) VALUES (bonus_carac,bonus_val);
 	end if;
-	
+
 	if ((select count (*) from carac where idObjet=obj_idObjet and caracteristique=bonus_carac and valeur=bonus_val)=0) then
 		INSERT INTO carac (idObjet,caracteristique,valeur) VALUES (obj_idObjet,bonus_carac,bonus_val);
 	end if;
@@ -104,11 +104,11 @@ BEGIN
 	mess = null;
 	ok := true;
 	SELECT into pa paRestants FROM troll where idTroll=id;
-	
+
 	select into ancCoordX positionX  from troll where idTroll=id;
 	select into ancCoordY positionY from troll where idTroll=id;
 	SELECT into nbTrolls count (*) FROM troll where positionX=ancCoordX and positionY=ancCoordY;
-	
+
 	if (pa=0) then
 		mess := 'Déplacement impossible : vous n''avez plus de PA';
 		ok := false;
@@ -123,13 +123,13 @@ BEGIN
 		mess := 'Erreur inconnue';
 		ok := false;
 	end if;
-	
+
 	if (ok = true) then
 		if ((select count (*) from coord where x=nouvCoordX and y=nouvCoordY)=0) then
 			insert into coord values (nouvCoordX,nouvCoordY);
 		end if;
 		UPDATE troll SET positionX=nouvCoordX, positionY=nouvCoordY where idTroll=id;
-		
+
 		select into nbObjets count (*) from objet where positionX=ancCoordX and positionY=ancCoordY;
 		select into nbTrolls count (*) from troll where positionX=ancCoordX and positionY=ancCoordY;
 		if (nbObjets = 0 and nbTrolls = 0) then
@@ -181,7 +181,7 @@ DECLARE deg ALIAS FOR $2;
 DECLARE vieRestante integer;
 
 BEGIN
-	SELECT into vieRestante vie from troll where idTroll=id; 
+	SELECT into vieRestante vie from troll where idTroll=id;
 	if (deg<=vieRestante) then
 		vieRestante := vieRestante-deg;
 	else

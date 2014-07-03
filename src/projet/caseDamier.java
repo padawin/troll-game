@@ -4,14 +4,14 @@ import java.io.*;
 
 public class caseDamier  implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String occupePar ;
 	private int X;
 	private int Y;
-	
+
 	public caseDamier () {
 		occupePar= " ";
 		X=0;

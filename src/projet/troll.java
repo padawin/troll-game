@@ -5,7 +5,7 @@ import java.util.*;
 
 
 public class troll {
-	
+
 	//attributs
 	private int idTroll;
 	private String nomTroll;
@@ -17,22 +17,22 @@ public class troll {
 	private int positionX;
 	private int positionY;
 	private String valeur;
-	
+
 	Menu menu;
-	
+
 	conn connection = new conn();
 	Connection conn = connection.Connection();
 	Statement stmt = connection.Statement();
 	CallableStatement proc;
-	
+
 	Hashtable tabPopoEnCours = new Hashtable();
-	
+
 	//methodes
-	
-	
+
+
 	//constructeur
 	public troll(int numtroll, int tailleEchiquier,Menu menu) {
-		
+
 		try {
 			this.menu = menu;
 			paRestants = 6;
@@ -89,16 +89,16 @@ public class troll {
 			System.out.println("Il apparaitra en X="+positionX+" Y="+positionY);
 			stmt.executeUpdate("delete from troll where idTroll="+idTroll);
 			proc = conn.prepareCall("{call init_troll(?,?,?,?,?,?,?,?)}");
-	        	proc.setInt(1,numtroll);
-	        	proc.setString(2,nomTroll);
-	        	proc.setInt(3,att);
-	        	proc.setInt(4,deg);
-	        	proc.setInt(5,esq);
-	        	proc.setInt(6,vie);
-	        	proc.setInt(7,positionX);
-	        	proc.setInt(8,positionY);
-	        	proc.executeUpdate();
-	        	proc.close();
+				proc.setInt(1,numtroll);
+				proc.setString(2,nomTroll);
+				proc.setInt(3,att);
+				proc.setInt(4,deg);
+				proc.setInt(5,esq);
+				proc.setInt(6,vie);
+				proc.setInt(7,positionX);
+				proc.setInt(8,positionY);
+				proc.executeUpdate();
+				proc.close();
 		}
 		catch (SQLException E) {
 			System.err.println("SQLException: " + E.getMessage());
@@ -106,7 +106,7 @@ public class troll {
 		}
 		valeur = ""+nomTroll.charAt(0);
 	}
-	
+
 	public troll(int id, String nom, int att, int deg, int esq, int tailleEchiquier) {
 		idTroll = id;
 		nomTroll = nom;
@@ -119,9 +119,9 @@ public class troll {
 		positionY = (int)Math.floor(Math.random() * (tailleEchiquier))+1;
 		valeur = ""+nomTroll.charAt(0);
 	}
-	
+
 	public void deplacer(int tailleEchiquier) {
-		
+
 		boolean coordOk = false;
 		System.out.println("Position actuelle : X="+positionX+" | Y="+positionY);
 		System.out.println("Nouvelle position :");
@@ -188,27 +188,27 @@ public class troll {
 			proc.registerOutParameter(1, Types.VARCHAR);
 			proc.setInt(2,idTroll);
 			proc.setInt(3,positionX);
-        	proc.setInt(4,positionY);
-        	proc.executeUpdate();
-        	String mess = proc.getString(1);
-	    	proc.close();
-	    	
-	    	proc = conn.prepareCall("{? = call pa_restants(?)}");
-	    	proc.registerOutParameter(1, Types.INTEGER);
+			proc.setInt(4,positionY);
+			proc.executeUpdate();
+			String mess = proc.getString(1);
+			proc.close();
+
+			proc = conn.prepareCall("{? = call pa_restants(?)}");
+			proc.registerOutParameter(1, Types.INTEGER);
 			proc.setInt(2,idTroll);
-        	proc.executeUpdate();
-        	paRestants = proc.getInt(1);
-	    	proc.close();
-	    	if (mess != null) {
-	    		System.out.println(mess);
-	    	}
+			proc.executeUpdate();
+			paRestants = proc.getInt(1);
+			proc.close();
+			if (mess != null) {
+				System.out.println(mess);
+			}
 		}
 		catch (SQLException E) {
 			System.err.println("SQLException: " + E.getMessage());
 			System.err.println("SQLState:     " + E.getSQLState());
 		}
 	}
-	
+
 	public boolean attaquer() {
 		boolean reussite;
 		boolean mort = false;
@@ -237,69 +237,69 @@ public class troll {
 				int scoreAttaque = score_Des(att);
 				System.out.println("Jet d'attaque : " + scoreAttaque);
 				try {
-					
+
 					proc = conn.prepareCall("{? = call nb_des_esq(?)}");
 					proc.registerOutParameter(1, Types.INTEGER);
 					proc.setInt(2,idTrollAdverse);
-		        	proc.executeUpdate();
-		        	int esqAdverse = proc.getInt(1);
-			    	proc.close();
-			    	int scoreEsquiveAdversaire = score_Des(esqAdverse);
-			    	System.out.println("Jet d'esquive de l'adversaire : " + scoreEsquiveAdversaire);
-			    	if (scoreEsquiveAdversaire < scoreAttaque) {
-			    		System.out.println("Esquive de l'adversaire ratée... PAF !!");
-			    		int scoreDegats = score_Des(deg);
-			    		System.out.print("L'adversaire perd " + scoreDegats + " pts de vie, il lui en reste donc ");
-	
-			    		proc = conn.prepareCall("{? = call decrementer_vie(?,?)}");
-			    		proc.registerOutParameter(1, Types.BOOLEAN);
-			    		proc.setInt(2,idTrollAdverse);
+					proc.executeUpdate();
+					int esqAdverse = proc.getInt(1);
+					proc.close();
+					int scoreEsquiveAdversaire = score_Des(esqAdverse);
+					System.out.println("Jet d'esquive de l'adversaire : " + scoreEsquiveAdversaire);
+					if (scoreEsquiveAdversaire < scoreAttaque) {
+						System.out.println("Esquive de l'adversaire ratée... PAF !!");
+						int scoreDegats = score_Des(deg);
+						System.out.print("L'adversaire perd " + scoreDegats + " pts de vie, il lui en reste donc ");
+
+						proc = conn.prepareCall("{? = call decrementer_vie(?,?)}");
+						proc.registerOutParameter(1, Types.BOOLEAN);
+						proc.setInt(2,idTrollAdverse);
 						proc.setInt(3,scoreDegats);
-			        	proc.executeUpdate();
-			        	mort = proc.getBoolean(1);
-				    	proc.close();
-				    	
-				    	ResultSet rset = stmt.executeQuery("select vie from troll where idTroll ="+ idTrollAdverse);
-			    		rset.first();
-			    		System.out.println(rset.getInt("vie"));
-				    	
-				    	proc = conn.prepareCall("{call init_pa(?,?)}");
-			    		proc.setInt(1,idTroll);
+						proc.executeUpdate();
+						mort = proc.getBoolean(1);
+						proc.close();
+
+						ResultSet rset = stmt.executeQuery("select vie from troll where idTroll ="+ idTrollAdverse);
+						rset.first();
+						System.out.println(rset.getInt("vie"));
+
+						proc = conn.prepareCall("{call init_pa(?,?)}");
+						proc.setInt(1,idTroll);
 						proc.setInt(2,paRestants-4);
-			        	proc.executeUpdate();
-				    	proc.close();
-				    	
-				    	paRestants = paRestants-4;
-				    	
-				    	
-			    	}
-			    	else if (scoreEsquiveAdversaire == scoreAttaque) {
-			    		System.out.println("Esquive de l'adversaire un peu tardive... PAF !!");
-			    		int scoreDegats = score_Des(deg);
-			    		System.out.println("L'adversaire perd " + (scoreDegats/2) + " pts de vie, il lui en reste donc ");
-			    		proc = conn.prepareCall("{? = call decrementer_vie(?,?)}");
-			    		proc.registerOutParameter(1, Types.BOOLEAN);
-			    		proc.setInt(2,idTrollAdverse);
+						proc.executeUpdate();
+						proc.close();
+
+						paRestants = paRestants-4;
+
+
+					}
+					else if (scoreEsquiveAdversaire == scoreAttaque) {
+						System.out.println("Esquive de l'adversaire un peu tardive... PAF !!");
+						int scoreDegats = score_Des(deg);
+						System.out.println("L'adversaire perd " + (scoreDegats/2) + " pts de vie, il lui en reste donc ");
+						proc = conn.prepareCall("{? = call decrementer_vie(?,?)}");
+						proc.registerOutParameter(1, Types.BOOLEAN);
+						proc.setInt(2,idTrollAdverse);
 						proc.setInt(3,scoreDegats);
-			        	proc.executeUpdate();
-			        	mort = proc.getBoolean(1);
-			        	proc.close();
-			        	
-			        	ResultSet rset = stmt.executeQuery("select vie from troll where idTroll ="+ idTrollAdverse);
-			    		rset.first();
-			    		System.out.println(rset.getInt("vie"));
-			        	
-			        	proc = conn.prepareCall("{call init_pa(?,?)}");
-			    		proc.setInt(1,idTroll);
+						proc.executeUpdate();
+						mort = proc.getBoolean(1);
+						proc.close();
+
+						ResultSet rset = stmt.executeQuery("select vie from troll where idTroll ="+ idTrollAdverse);
+						rset.first();
+						System.out.println(rset.getInt("vie"));
+
+						proc = conn.prepareCall("{call init_pa(?,?)}");
+						proc.setInt(1,idTroll);
 						proc.setInt(2,paRestants-4);
-			        	proc.executeUpdate();
-				    	proc.close();
-				    	
-				    	paRestants = paRestants-4;
-			    	}
-			    	else {
-			    		System.out.println("Magnifique esquive de l'adversaire qui ne subira donc aucun dommage");
-			    	}
+						proc.executeUpdate();
+						proc.close();
+
+						paRestants = paRestants-4;
+					}
+					else {
+						System.out.println("Magnifique esquive de l'adversaire qui ne subira donc aucun dommage");
+					}
 				}
 				catch (SQLException E) {
 					System.err.println("SQLException: " + E.getMessage());
@@ -308,11 +308,11 @@ public class troll {
 			}
 		}
 		else {
-    		System.out.println("Le troll adverse n'est pas sur votre case !!");
+			System.out.println("Le troll adverse n'est pas sur votre case !!");
 		}
 		return (mort);
 	}
-	
+
 	public boolean loi_reussite() {
 		int proba =  (int)Math.floor(Math.random() * (100))+1;
 		if (proba<=80) {
@@ -324,45 +324,45 @@ public class troll {
 			return (false);
 		}
 	}
-	
+
 	public int score_Des(int nbDes) {
-		
+
 		int score = 0;
 		for(int i=0 ; i<nbDes ; i++) {
 			score = score + (int)Math.floor(Math.random() * (3))+1;
 		}
 		return (score);
 	}
-	
+
 	public int paRestant() {
-		
+
 		return (paRestants);
 	}
-	
+
 	public void setPa (int pa) {
 		paRestants = pa;
 	}
-	
+
 	public String nomTroll () {
 		return (nomTroll);
 	}
-	
+
 	public void ramasserObjet () {
 		boolean vide=true;
 		try {
 			ResultSet rset = stmt.executeQuery("select idObjet from objet where positionX="+positionX+ " and positionY="+positionY);
-    		Hashtable tabObj = new Hashtable();
+			Hashtable tabObj = new Hashtable();
 			while (rset.next()) {
 				vide=false;
-	    		String idObj = rset.getString("idObjet");
-	    		System.out.println(idObj);
-	    		tabObj.put(idObj, idObj);
-	    	}
-	    	rset.close();
-	    	if (!vide) {
-		    	System.out.println("Quel objet voulez vous ramasser ? : ");
-		    	String obj = IO.lireChaine();
-		    	if (tabObj.containsKey(obj)) {
+				String idObj = rset.getString("idObjet");
+				System.out.println(idObj);
+				tabObj.put(idObj, idObj);
+			}
+			rset.close();
+			if (!vide) {
+				System.out.println("Quel objet voulez vous ramasser ? : ");
+				String obj = IO.lireChaine();
+				if (tabObj.containsKey(obj)) {
 					proc = conn.prepareCall("{call rammasser(?,?)}");
 					proc.setInt(1,idTroll);
 					proc.setString(2,obj);
@@ -384,23 +384,23 @@ public class troll {
 					}
 					stmt.executeUpdate("update troll SET paRestants = " + (ancVal-1) + " where idTroll=" + idTroll);
 					paRestants = paRestants-1;
-		    	}
+				}
 				else {
 					System.out.println("Cet objet ne se trouve pas sur votre case !");
 				}
-	    	}
-	    	else {
-	    		System.out.println("Il n'y a aucun objet sur votre case");
-	    	}
+			}
+			else {
+				System.out.println("Il n'y a aucun objet sur votre case");
+			}
 		}
 		catch (SQLException E) {
 			System.err.println("SQLException: " + E.getMessage());
 			System.err.println("SQLState:     " + E.getSQLState());
 		}
 	}
-	
+
 	public void tesObjets () {
-	
+
 		try {
 			ResultSet rset = stmt.executeQuery("select idObjet from equipement where idTroll="+idTroll + " and estEquipe=false");
 			while (rset.next()){
@@ -415,9 +415,9 @@ public class troll {
 			System.err.println("SQLState:     " + E.getSQLState());
 		}
 	}
-	
+
 	public void equiperObjet (String idObjet) {
-		
+
 		int val=0;
 		int ancVal=0;
 		String carac=null;
@@ -427,7 +427,7 @@ public class troll {
 			while (rset.next()){
 				carac = rset.getString("caracteristique");
 			}
-			
+
 			rset = conn.createStatement().executeQuery("select valeur from carac where idObjet='"+idObjet+"'");
 			while (rset.next()){
 				val = rset.getInt("valeur");
@@ -450,15 +450,15 @@ public class troll {
 			System.err.println("SQLState:     " + E.getSQLState());
 		}
 	}
-	
+
 	public int positionX() {
 		return (positionX);
 	}
-	
+
 	public int positionY() {
 		return (positionY);
 	}
-	
+
 	public void desequiperObjet(String idObjet) {
 		int val=0;
 		int ancVal=0;
@@ -469,7 +469,7 @@ public class troll {
 			while (rset.next()){
 				carac = rset.getString("caracteristique");
 			}
-			
+
 			rset = conn.createStatement().executeQuery("select valeur from carac where idObjet='"+idObjet+"'");
 			while (rset.next()){
 				val = rset.getInt("valeur");
@@ -492,7 +492,7 @@ public class troll {
 			System.err.println("SQLState:     " + E.getSQLState());
 		}
 	}
-	
+
 	public void utiliserPopo (objet potion) {
 		int val=0;
 		int ancVal=0;
@@ -503,7 +503,7 @@ public class troll {
 			while (rset.next()){
 				carac = rset.getString("caracteristique");
 			}
-			
+
 			rset = conn.createStatement().executeQuery("select valeur from carac where idObjet='"+potion.idObjet()+"'");
 			while (rset.next()){
 				val = rset.getInt("valeur");
@@ -527,19 +527,19 @@ public class troll {
 			System.err.println("SQLState:     " + E.getSQLState());
 		}
 	}
-	
+
 	public void supprimerPopo(objet popo) {
-		
+
 		String idPopo = popo.idObjet();
 		int val=0;
 		int ancVal=0;
 		String carac=null;
-		try {						
+		try {
 			ResultSet rset = stmt.executeQuery("select caracteristique from carac where idObjet='"+idPopo+"'");
 			while (rset.next()){
 				carac = rset.getString("caracteristique");
 			}
-			
+
 			rset = conn.createStatement().executeQuery("select valeur from carac where idObjet='"+idPopo+"'");
 			while (rset.next()){
 				val = rset.getInt("valeur");
@@ -561,15 +561,15 @@ public class troll {
 			System.err.println("SQLState:     " + E.getSQLState());
 		}
 	}
-	
+
 	public Hashtable tesPopoEnCours() {
 		return (tabPopoEnCours);
 	}
-	
+
 	public String getValeur() {
 		return (valeur);
 	}
-	
+
 	public void verifTourPopo() {
 		Enumeration enumPopo = tabPopoEnCours.elements();
 		while (enumPopo.hasMoreElements()) {
@@ -581,7 +581,7 @@ public class troll {
 			}
 		}
 	}
-	
+
 	public void afficherPopo() {
 		Enumeration enumPopo = tabPopoEnCours.elements();
 		if (!enumPopo.hasMoreElements()) {
@@ -592,7 +592,7 @@ public class troll {
 			System.out.println("      *    - "+popo.idObjet() +" : " + popo.duree() + " tour(s) restant(s)*");
 		}
 	}
-	
+
 	public void reinitialiserTroll () {
 		String idObjet;
 		try {

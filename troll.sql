@@ -1,18 +1,18 @@
 CREATE TABLE coord (
 	x				integer,
-    y				integer,
+	y				integer,
 	PRIMARY KEY (x,y)
 );
 
 CREATE TABLE bonus (
 	caracteristique	varchar(20),
-    valeur			integer,
+	valeur			integer,
 	PRIMARY KEY (caracteristique,valeur)
 );
 
 CREATE TABLE objet (
 	idObjet			varchar(20),
-    typeObjet		varchar(20),
+	typeObjet		varchar(20),
 	positionX		integer,
 	positionY		integer,
 	poids			float,
@@ -23,7 +23,7 @@ CREATE TABLE objet (
 CREATE TABLE carac (
 	idObjet			varchar(20),
 	caracteristique	varchar(20),
-    valeur			integer,
+	valeur			integer,
 	foreign KEY (idObjet) references objet (idObjet),
 	foreign KEY (caracteristique,valeur) references bonus (caracteristique,valeur)
 );
@@ -31,8 +31,8 @@ CREATE TABLE carac (
 CREATE TABLE troll (
 	idTroll			integer,
 	nomTroll		varchar(20),
-    attaque			integer,
-    degats			integer,
+	attaque			integer,
+	degats			integer,
 	esquive			integer,
 	vie				integer,
 	paRestants		integer,
