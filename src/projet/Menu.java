@@ -20,11 +20,11 @@ public class Menu {
 
 	Damier dam = new Damier(troll1, troll2, tailleEchiquier);
 
-	Hashtable tabObjets = new Hashtable();
-	Hashtable tabPopo = new Hashtable();
-	Hashtable tabObjetsAffichage = new Hashtable();
-	Hashtable tabPopoAffichage = new Hashtable();
-	Hashtable tabTemp = new Hashtable();
+	Hashtable<String, objet> tabObjets = new Hashtable<String, objet>();
+	Hashtable<String, objet> tabPopo = new Hashtable<String, objet>();
+	Hashtable<String, objet> tabObjetsAffichage = new Hashtable<String, objet>();
+	Hashtable<String, objet> tabPopoAffichage = new Hashtable<String, objet>();
+	Hashtable<String, objet> tabTemp = new Hashtable<String, objet>();
 
 	public Menu() {
 		int choix;

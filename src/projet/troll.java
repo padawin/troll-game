@@ -25,7 +25,7 @@ public class troll {
 	Statement stmt = connection.Statement();
 	CallableStatement proc;
 
-	Hashtable tabPopoEnCours = new Hashtable();
+	Hashtable<String, objet> tabPopoEnCours = new Hashtable<String, objet>();
 
 	//methodes
 
@@ -351,7 +351,7 @@ public class troll {
 		boolean vide=true;
 		try {
 			ResultSet rset = stmt.executeQuery("select idObjet from objet where positionX="+positionX+ " and positionY="+positionY);
-			Hashtable tabObj = new Hashtable();
+			Hashtable<String, String> tabObj = new Hashtable<String, String>();
 			while (rset.next()) {
 				vide=false;
 				String idObj = rset.getString("idObjet");
