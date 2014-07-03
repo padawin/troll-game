@@ -56,7 +56,6 @@ java -cp .:/path/to/postgresql/jdbc.jar projet.Start
 ## Future developments
 
 * The code has to be translated in english.
-* I also may wish to write it in another language (Python, C or C++ maybe ?)
 * And some features don't really work and need to be cleaned up a little...
 
 
