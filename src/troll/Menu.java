@@ -3,6 +3,8 @@ package troll;
 import java.sql.*;
 import java.util.Hashtable;
 
+import troll.util.IO;
+
 public class Menu {
 
 	conn connection = new conn();
@@ -40,7 +42,7 @@ public class Menu {
 			System.out.println("      **************************************");
 			System.out.println();
 			System.out.print("      Votre Choix : ");
-			choix = IO.lireEntier();
+			choix = IO.readInt();
 
 			switch (choix) {
 			case 1: {
@@ -188,7 +190,7 @@ public class Menu {
 						.println("      ******************************************");
 				System.out.println();
 				System.out.print("      Votre Choix : ");
-				choix = IO.lireEntier();
+				choix = IO.readInt();
 
 				switch (choix) {
 				case 1: {
@@ -258,7 +260,7 @@ public class Menu {
 				case 4: {
 					tabTrolls[tour].tesObjets();
 					System.out.println("Quel objet voulez vous equiper ?");
-					String idObj = IO.lireChaine();
+					String idObj = IO.readString();
 					ResultSet rset = stmt
 							.executeQuery("select estEquipe from equipement where idTroll="
 									+ tour + " and idObjet='" + idObj + "'");
@@ -282,7 +284,7 @@ public class Menu {
 					/*
 					 * if (tour==1) { troll1.tesObjets();
 					 * System.out.println("Quel objet voulez vous equiper ?");
-					 * String idObj = IO.lireChaine(); ResultSet rset =
+					 * String idObj = IO.readString(); ResultSet rset =
 					 * stmt.executeQuery(
 					 * "select estEquipe from equipement where idTroll=1 and idObjet='"
 					 * +idObj+"'"); boolean vide=true; boolean estEquipe=false;
@@ -294,7 +296,7 @@ public class Menu {
 					 * "Cet objet ne fait pas parti de votre équipement !"); } }
 					 * else { troll2.tesObjets();
 					 * System.out.println("Quel objet voulez vous equiper ?");
-					 * String idObj = IO.lireChaine(); ResultSet rset =
+					 * String idObj = IO.readString(); ResultSet rset =
 					 * stmt.executeQuery(
 					 * "select estEquipe from equipement where idTroll=2 and idObjet='"
 					 * +idObj+"'"); boolean vide=true; boolean estEquipe=false;
@@ -317,7 +319,7 @@ public class Menu {
 						}
 						System.out
 								.println("Quel objet voulez vous desequiper ?");
-						String idObj = IO.lireChaine();
+						String idObj = IO.readString();
 						tabTrolls[tour].desequiperObjet(idObj);
 					} else {
 						System.out
@@ -331,7 +333,7 @@ public class Menu {
 					 * System.out.println(rset.getString("idObjet")); }
 					 * System.out
 					 * .println("Quel objet voulez vous desequiper ?"); String
-					 * idObj = IO.lireChaine(); troll1.desequiperObjet(idObj); }
+					 * idObj = IO.readString(); troll1.desequiperObjet(idObj); }
 					 * else { System.out.println(
 					 * "Cet objet ne fait pas parti de votre équipement ou n'est pas equipe !"
 					 * ); } } else { ResultSet rset = stmt.executeQuery(
@@ -340,7 +342,7 @@ public class Menu {
 					 * System.out.println(rset.getString("idObjet")); }
 					 * System.out
 					 * .println("Quel objet voulez vous desequiper ?"); String
-					 * idObj = IO.lireChaine(); troll2.desequiperObjet(idObj); }
+					 * idObj = IO.readString(); troll2.desequiperObjet(idObj); }
 					 * else { System.out.println(
 					 * "Cet objet ne fait pas parti de votre équipement ou n'est pas equipe !"
 					 * ); } }
@@ -365,7 +367,7 @@ public class Menu {
 					if (!vide) {
 						System.out
 								.println("Quelle potion voulez vous utiliser ?");
-						String idObj = IO.lireChaine();
+						String idObj = IO.readString();
 						if (tabTemp.containsKey(idObj)) {
 							objet popo = (objet) tabTemp.get(idObj);
 							tabTrolls[tour].utiliserPopo(popo);
@@ -386,7 +388,7 @@ public class Menu {
 					 * obj = (objet)tabPopo.get(id); if (obj==null){ }
 					 * tabTemp.put(id,obj); } if (!vide) {
 					 * System.out.println("Quelle potion voulez vous utiliser ?"
-					 * ); String idObj = IO.lireChaine(); if
+					 * ); String idObj = IO.readString(); if
 					 * (tabTemp.containsKey(idObj)) { objet popo =
 					 * (objet)tabTemp.get(idObj); troll1.utiliserPopo(popo); }
 					 * else { System.out.println(
@@ -401,7 +403,7 @@ public class Menu {
 					 * System.out.println("TEST4"); } tabTemp.put(id,obj); } if
 					 * (!vide) {
 					 * System.out.println("Quelle potion voulez vous utiliser ?"
-					 * ); String idObj = IO.lireChaine(); if
+					 * ); String idObj = IO.readString(); if
 					 * (tabTemp.containsKey(idObj)) { objet popo =
 					 * (objet)tabTemp.get(idObj); troll2.utiliserPopo(popo); }
 					 * else { System.out.println(
@@ -528,7 +530,7 @@ public class Menu {
 			System.out.println("      **************************************");
 			System.out.println();
 			System.out.print("      Votre Choix : ");
-			choix = IO.lireEntier();
+			choix = IO.readInt();
 
 			switch (choix) {
 			case 1: {
@@ -539,7 +541,7 @@ public class Menu {
 				if (numTroll == 1) {
 					try {
 						System.out.print("Nom du troll à charger : ");
-						String nomTroll = IO.lireChaine();
+						String nomTroll = IO.readString();
 						rset = stmt
 								.executeQuery("select attaque,degats,esquive from troll where nomTroll='"
 										+ nomTroll + "'");
@@ -557,7 +559,7 @@ public class Menu {
 				} else {
 					try {
 						System.out.print("Nom du troll à charger : ");
-						String nomTroll = IO.lireChaine();
+						String nomTroll = IO.readString();
 						rset = stmt
 								.executeQuery("select attaque,degats,esquive from troll where nomTroll='"
 										+ nomTroll + "'");

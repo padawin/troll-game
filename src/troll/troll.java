@@ -3,6 +3,7 @@ package troll;
 import java.sql.*;
 import java.util.*;
 
+import troll.util.IO;
 
 public class troll {
 
@@ -39,14 +40,14 @@ public class troll {
 			System.out.println();
 			idTroll = numtroll;
 			System.out.print("Nom du troll " +numtroll +": ");
-			nomTroll = IO.lireChaine();
+			nomTroll = IO.readString();
 			int points=40;
 			//System.out.println("Vous allez maitenant definir les carac de votre troll (attaque, degats, esquive, vie)");
 			boolean ok=false;
 			while (ok==false) {
 				System.out.println();
 				System.out.print("Nombre de D3 d'attaque (Il reste "+points+" a repartir dans 4 carac) : ");
-				att = IO.lireEntier();
+				att = IO.readInt();
 				if (att>points-3) {
 					System.out.println("Impossible de mettre autant de points dans 1 seule carac !!");
 				}
@@ -59,7 +60,7 @@ public class troll {
 			while (ok==false) {
 				System.out.println();
 				System.out.print("Nombre de D3 de degats (Il reste "+points+" a repartir dans 3 carac) : ");
-				deg = IO.lireEntier();
+				deg = IO.readInt();
 				if (deg>points-2) {
 					System.out.println("Impossible de mettre autant de points dans 1 seule carac !!");
 				}
@@ -72,7 +73,7 @@ public class troll {
 			while (ok==false) {
 				System.out.println();
 				System.out.print("Nombre de D3 d'esquive (Il reste "+points+" a repartir dans 2 carac) : ");
-				esq = IO.lireEntier();
+				esq = IO.readInt();
 				if (esq>points-1) {
 					System.out.println("Impossible de mettre autant de points dans 1 seule carac !!");
 				}
@@ -135,7 +136,7 @@ public class troll {
 			else {
 				System.out.print("X [" + (positionX-1) + " - " + (positionX+1) +" ] = ");
 			}
-			int nouvPositionX = IO.lireEntier();
+			int nouvPositionX = IO.readInt();
 			if (nouvPositionX<1) {
 				System.out.println("Impossible : coordonnee X < 1 !");
 			}
@@ -161,7 +162,7 @@ public class troll {
 			else {
 				System.out.print("Y [" + (positionY-1) + " - " + (positionY+1) +" ] = ");
 			}
-			int nouvPositionY = IO.lireEntier();
+			int nouvPositionY = IO.readInt();
 			if (nouvPositionY<1) {
 				System.out.println("Impossible : coordonnee Y < 1 !");
 			}
@@ -361,7 +362,7 @@ public class troll {
 			rset.close();
 			if (!vide) {
 				System.out.println("Quel objet voulez vous ramasser ? : ");
-				String obj = IO.lireChaine();
+				String obj = IO.readString();
 				if (tabObj.containsKey(obj)) {
 					proc = conn.prepareCall("{call rammasser(?,?)}");
 					proc.setInt(1,idTroll);
