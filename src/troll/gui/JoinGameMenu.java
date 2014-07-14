@@ -8,6 +8,11 @@ class JoinGameMenu
 {
 	public int run()
 	{
+		System.out.println();
+		System.out.println();
+		System.out.println("      **************************************");
+		System.out.println("      *              Join game             *");
+		System.out.println("      **************************************");
 		ArrayList<Game> games = Game.getGames();
 		int i, nbGames, choice;
 		nbGames = games.size();
@@ -17,8 +22,10 @@ class JoinGameMenu
 			return -1;
 		}
 		else {
+
+			System.out.println("      * List of existing games:            *");
 			for (i = 0; i < nbGames; i++) {
-				System.out.println(games.get(i).getName());
+				System.out.println("      * - " + games.get(i).getName());
 			}
 
 			do {
