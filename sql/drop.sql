@@ -4,3 +4,4 @@ drop table troll;
 drop table equipement;
 drop table objet;
 drop table coord;
+drop table game;
