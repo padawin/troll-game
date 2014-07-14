@@ -31,7 +31,8 @@ public class Menu
 
 			switch (choice) {
 				case 1: {
-					new NewGameMenu();
+					NewGameMenu nGM = new NewGameMenu();
+					int result = nGM.run();
 					System.out.println("New game");
 					break;
 				}
