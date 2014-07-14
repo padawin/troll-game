@@ -2,9 +2,6 @@ package troll;
 
 public class Start {
 
-	// ****************************
-	// Constructeur
-	// ****************************
 	public Start() {
 
 		try {
@@ -16,18 +13,10 @@ public class Start {
 		}// catch
 
 		new Menu();
-
-		// Appel au Menu Principal
-		// Sauvegarde des objets de l'application
-	} // Fin Constructeur
-
-	// ************************************
-	// Programme Principal
-	// ************************************
+	}
 
 	public static void main(String Args[]) {
 
 		new Start();
-	} // Fin main
-
-} // Fin Classe Start
+	}
+}
