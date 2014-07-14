@@ -25,7 +25,7 @@ In Postgres, you need to create a user 'troll' with as password 'Troll' and a da
 > psql -U postgres
 postgres=# CREATE USER troll WITH PASSWORD 'Troll';
 CREATE ROLE
-postgres=# CREATE DATABASE trollss OWNER troll;
+postgres=# CREATE DATABASE trolls OWNER troll;
 CREATE DATABASE
 postgres=# \q
 ```
