@@ -1,5 +1,7 @@
 package troll;
 
+import troll.gui.Menu;
+
 public class Start {
 
 	public Start() {
