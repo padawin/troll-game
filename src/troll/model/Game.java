@@ -4,6 +4,7 @@ import troll.model.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class Game
@@ -33,6 +34,31 @@ public class Game
 		}
 
 		return games;
+	}
+
+	public static Game loadFromName(String name)
+	{
+		Connection connection = new Connection();
+
+		try {
+			String selectSQL = "SELECT id, name FROM game WHERE name = ?";
+			PreparedStatement preparedStatement = connection.getConnection().prepareStatement(selectSQL);
+			preparedStatement.setString(1, name);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				Game game = new Game();
+				game.setId(rs.getInt("id"));
+				game.setName(rs.getString("name"));
+
+				return game;
+			}
+		}
+		catch (SQLException E) {
+			System.err.println("SQLException: " + E.getMessage());
+			System.err.println("SQLState:     " + E.getSQLState());
+		}
+
+		return null;
 	}
 
 	public void setId(int id)
