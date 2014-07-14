@@ -9,12 +9,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Connection {
+public class Connection
+{
 
 	protected java.sql.Connection _connection;
 	protected Statement _stmt;
 
-	public Connection() {
+	public Connection()
+	{
 		Properties prop = new Properties();
 		InputStream input = null;
 		String dbHost, dbName, dbUser, dbPasswd;
@@ -45,7 +47,8 @@ public class Connection {
 		}
 	}
 
-	public boolean connexionBd(String host, String name, String user, String pwd) {
+	public boolean connexionBd(String host, String name, String user, String pwd)
+	{
 		boolean conOk;
 		try {
 			String url = "jdbc:postgresql://" + host + "/" + name;
@@ -61,15 +64,18 @@ public class Connection {
 		return (conOk);
 	}
 
-	public java.sql.Connection getConnection() {
+	public java.sql.Connection getConnection()
+	{
 		return this._connection;
 	}
 
-	public java.sql.Statement getStatement() {
+	public java.sql.Statement getStatement()
+	{
 		return this._stmt;
 	}
 
-	public void close() {
+	public void close()
+	{
 		try {
 			this._connection.close();
 		} catch (SQLException E) {
